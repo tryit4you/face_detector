@@ -23,9 +23,9 @@ def getImagesAndLabels(path):
         cv2.waitKey(10)
     return IDs, faces
 
-
-Ids, faces = getImagesAndLabels(path)
-# trainning
-recognizer.train(faces, np.array(Ids))
-recognizer.save('resources/trainningData.yml')
-cv2.destroyAllWindows()
+def startTranning():
+    Ids, faces = getImagesAndLabels(path)
+    # trainning
+    recognizer.train(faces, np.array(Ids))
+    recognizer.save('resources/trainningData.yml')
+    cv2.destroyAllWindows()
