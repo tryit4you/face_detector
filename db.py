@@ -1,3 +1,4 @@
+from sqlite3.dbapi2 import Date
 import cv2
 import sqlite3
 
@@ -19,6 +20,26 @@ def createDataSample(Id, Name,Org,Identify):
         cmd = "UPDATE People SET Name=" + "'" + str(Name) + "'" + " WHERE ID=" + str(Id)
     else:
         cmd = "INSERT INTO People(Id,Name,Organization,Identify) Values("+"'" + str(Id)+"'" + "," +  "'"+str(Name)+ "'"+"," +  "'"+str(Org)+"'"+ "," +  "'"+str(Identify) + "'"+ ")"
+    print(cmd)
+    conn.execute(cmd)
+    conn.commit()
+    is_insert_or_update=True;
+    conn.close()
+    status=True
+
+    return (status,Id)
+
+def diemDanhNgay(Id,UserId,Name,Org,Ngay):
+    status=False
+    conn = sqlite3.connect("FaceBase.db")
+    print(conn)
+    cmd = "SELECT * FROM DiemDanh WHERE UserId="+"'" + str(UserId)+"'"
+    cursor = conn.execute(cmd)
+    isRecordExist = 0
+    for row in cursor:
+        isRecordExist = 1
+    if (isRecordExist == 0):
+        cmd = "INSERT INTO DiemDanh(ID,UserId,UserName,ThoiGian,Org) Values("+"'"+ str(Id)+"'" + "," + "'"+str(UserId)+ "'"+","+ "'"+str(Name)+ "'"+"," +"'"+str(Ngay)+ "'"+"," +  "'"+str(Org) + "'"+ ")"
     print(cmd)
     conn.execute(cmd)
     conn.commit()

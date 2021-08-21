@@ -16,9 +16,10 @@ from kivymd.uix.dialog import MDDialog
 from kivy.uix.screenmanager import Screen, ScreenManager
 from kivy.lang import Builder
 from theme import account_layout
-from db import createDataSample,getSample
+from db import createDataSample,getSample,diemDanhNgay
 from training import startTranning
 import random
+from datetime import datetime
 faceDetect = cv2.CascadeClassifier(
     'resources/haarcascade_frontalface_default.xml')
 id = 0
@@ -48,9 +49,14 @@ class KivyCamera(Image):
         self.current_profile_id = current_profile_id
         Clock.schedule_interval(self.update, 1.0 / fps)
 
-    def toast_show(self, profile):
+    def diemdanh(self, profile):
+        message="Chào buổi sáng " 
         if(int(profile[0]) != self.current_profile_id):
-            toast("Chào buổi sáng " + str(profile[1])+"\n"+"Đơn vị:" + str(
+            id=random.randint(0,9999999);
+            ngay=datetime.today()
+            diemDanhNgay(id,profile[0],profile[1],profile[4],ngay);
+            
+            toast(message+ str(profile[1])+"\n"+"Đơn vị:" + str(
                 profile[4]), background=[85/255, 86/255, 1, 1])
         self.current_profile_id = int(profile[0])
 
@@ -68,7 +74,7 @@ class KivyCamera(Image):
             profile = None
             for row in cursor:
                 profile = row
-            self.toast_show(profile)
+            self.diemdanh(profile)
             conn.close()
 
         ret, frame = self.capture.read()
